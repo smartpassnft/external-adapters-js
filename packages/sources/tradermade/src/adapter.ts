@@ -2,6 +2,8 @@ import { ExecuteWithConfig, Config, ExecuteFactory, AdapterRequest, AxiosRespons
 import { Requester, Validator } from '@chainlink/ea-bootstrap'
 import { makeConfig, NAME } from './config'
 
+export const batchablePropertyPath = ['from', 'to']
+
 const customParams = {
   base: ['base', 'from', 'symbol', 'market'],
   to: false,
@@ -26,7 +28,7 @@ const handleBatchedRequest = (
     ])
 
   }
-  return Requester.success(jobRunID, Requester.withResult(response, undefined, payload), true, ['from', 'to'])
+  return Requester.success(jobRunID, Requester.withResult(response, undefined, payload), true, batchablePropertyPath)
 }
 
 
@@ -58,7 +60,7 @@ export const execute: ExecuteWithConfig<Config> = async (request, _, config) => 
   if (Array.isArray(symbol) || Array.isArray(to)) return handleBatchedRequest(jobRunID, request, response, 'mid')
 
   response.data.result = Requester.validateResultNumber(response.data, ['quotes', 0, 'mid'])
-  return Requester.success(jobRunID, response, config.api.verbose, ['from', 'to'])
+  return Requester.success(jobRunID, response, config.api.verbose, batchablePropertyPath)
 }
 
 export const makeExecute: ExecuteFactory<Config> = (config) => {
