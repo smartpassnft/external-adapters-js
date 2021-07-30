@@ -21,14 +21,13 @@ describe('execute', () => {
       {
         name: 'scores',
         testData: { id: jobID, data: { sport, endpoint: 'scores', season: '2021REG' } },
-      }
+      },
     ]
 
     requests.forEach((req) => {
       it(`${req.name}`, async () => {
         const data = await execute(req.testData as AdapterRequest)
         assertSuccess({ expected: 200, actual: data.statusCode }, data, jobID)
-        console.log(data)
         expect(data.result.length).toBeGreaterThan(0)
         expect(data.data.result.length).toBeGreaterThan(0)
       })

@@ -100,11 +100,7 @@ export const execute: ExecuteWithConfig<ExtendedConfig> = async (request, _, con
     deltaBlocks: number,
   ): Promise<boolean> => {
     try {
-<<<<<<< HEAD
       const isHealthy = await fn(network, delta, deltaBlocks)
-=======
-      const isHealthy = await fn(network, delta)
->>>>>>> 15d523a6 (Added casing normalization to EAs that support Batching (#725))
       if (isHealthy === false) {
         Logger.warn(
           `Method ${fn.name} reported an unhealthy response. Network ${network} considered unhealthy`,
@@ -131,10 +127,7 @@ export const execute: ExecuteWithConfig<ExtendedConfig> = async (request, _, con
     if (!isHealthy) {
       // TODO: Decide if getStatusByTransaction should determine the final state
       Logger.info(`Checking unhealthy network ${network} with transaction submission`)
-      const isHealthyByTransaction = await getStatusByTransaction(
-        network,
-        config.timeoutLimit,
-      )
+      const isHealthyByTransaction = await getStatusByTransaction(network, config.timeoutLimit)
       if (isHealthyByTransaction) {
         Logger.info(
           `Transaction submission check succeeded. Network ${network} can be considered healthy`,
